@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Árbol Genealógico - Familia Acosta Rodríguez</title>
+    <title>Árbol Genealógico Completo - Antonio Felipe Acosta Rodríguez</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap');
         
@@ -14,97 +14,54 @@
             padding: 20px;
             color: #333;
         }
-        
-        header {
-            text-align: center;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        
-        h1 {
-            font-family: 'Playfair Display', serif;
-            color: #2c3e50;
-            margin: 0;
-            font-size: 2.6rem;
-        }
-        
+        header { text-align: center; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        h1 { font-family: 'Playfair Display', serif; color: #2c3e50; margin: 0; font-size: 2.7rem; }
+
         .tree-container {
-            max-width: 1300px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
-        
-        .tree, .tree ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .tree ul {
-            padding-left: 60px;
-            position: relative;
-        }
-        
+
+        .tree, .tree ul { list-style: none; padding: 0; margin: 0; }
+        .tree ul { padding-left: 65px; position: relative; }
         .tree ul:before {
-            content: '';
-            position: absolute;
-            left: 30px;
-            top: 10px;
-            bottom: 10px;
-            width: 3px;
-            background: #bdc3c7;
+            content: ''; position: absolute; left: 32px; top: 10px; bottom: 10px; width: 3px; background: #bdc3c7;
         }
-        
+
         .person {
             position: relative;
-            margin: 18px 0;
+            margin: 16px 0;
             padding: 18px 22px;
             background: #fff;
             border: 3px solid #3498db;
             border-radius: 12px;
-            width: 340px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            width: 360px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
             transition: all 0.3s;
         }
-        
-        .person:hover {
-            transform: scale(1.03);
-            box-shadow: 0 12px 25px rgba(52,152,219,0.25);
-        }
-        
+        .person:hover { transform: scale(1.03); box-shadow: 0 12px 25px rgba(52,152,219,0.3); }
         .person.spouse { border-color: #e67e22; }
         .person.deceased { border-color: #7f8c8d; }
-        
-        .name {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin: 0 0 8px 0;
-        }
-        
-        .details {
-            font-size: 0.95rem;
-            color: #555;
-        }
-        
+
+        .name { font-size: 1.2rem; font-weight: bold; color: #2c3e50; margin: 0 0 6px 0; }
+        .details { font-size: 0.93rem; color: #555; line-height: 1.4; }
+
         .connector {
             position: absolute;
             top: 50%;
-            left: -32px;
-            width: 32px;
+            left: -33px;
+            width: 33px;
             height: 3px;
             background: #bdc3c7;
         }
-        
+
         .toggle-btn {
             position: absolute;
-            right: -15px;
+            right: -16px;
             top: 50%;
             transform: translateY(-50%);
             background: #3498db;
@@ -117,32 +74,26 @@
             font-size: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        
+
         .collapsed > ul { display: none !important; }
-        
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #666;
-        }
     </style>
 </head>
 <body>
     <header>
         <h1>Antonio Felipe Acosta Rodríguez</h1>
-        <p>1916 — 1995 | Árbol Genealógico Completo</p>
+        <p>1916 — 1995 | Árbol Genealógico Completo (3 Esposas)</p>
     </header>
 
     <div class="tree-container">
         <ul class="tree">
             <li>
-                <div class="person" style="border-color:#2c3e50;">
+                <div class="person" style="border-color:#2c3e50; background:#ecf0f1;">
                     <div class="name">Antonio Felipe Acosta Rodríguez</div>
                     <div class="details">16 Feb 1916 - 8 Dic 1995 • Tazacorte → Margarita</div>
                 </div>
 
                 <ul>
-                    <!-- CARMEN ANTONIA DEFFIT AVILA -->
+                    <!-- ESPOSA 1: Carmen Antonia Deffit Avila -->
                     <li>
                         <div class="connector"></div>
                         <div class="person spouse">
@@ -150,83 +101,22 @@
                             <div class="details">1929 - 2020</div>
                         </div>
                         <ul>
-                            <li>
-                                <div class="connector"></div>
-                                <div class="person">
-                                    <div class="name">Carmen Antonia Acosta Deffit</div>
-                                    <div class="details">1958</div>
-                                </div>
+                            <li><div class="connector"></div><div class="person">Carmen Antonia Acosta Deffit (1958) → Jezabel & Maria Antonieta (Axel Ignacio 2016)</div></li>
+                            <li><div class="connector"></div><div class="person">Diogenes Jose Acosta Deffit (1960) → Genesis (1993) & Veronica (1998)</div></li>
+                            <li><div class="connector"></div><div class="person">Grimaldo José Acosta Deffit (1960-2022) 
                                 <ul>
-                                    <li><div class="connector"></div><div class="person">Jezabel Sarait Eljuri Acosta (1986)</div></li>
-                                    <li><div class="connector"></div><div class="person">Maria Antonieta Eljuri Acosta (1990) + Alexander Gusman</div>
-                                        <ul><li><div class="connector"></div><div class="person">Axel Ignacio Gomez Eljuri (2016)</div></li></ul>
-                                    </li>
+                                    <li>Oscar Javier + Marvis → Osmarys, Osmarly, Oscar David</li>
+                                    <li>Zuligrimar + Williams → Zara Vaamonde</li>
+                                    <li>Jesus Rafael + Stephany</li>
                                 </ul>
-                            </li>
-                            <li>
-                                <div class="connector"></div>
-                                <div class="person">
-                                    <div class="name">Diogenes Jose Acosta Deffit</div>
-                                    <div class="details">1960</div>
-                                </div>
-                                <ul>
-                                    <li><div class="connector"></div><div class="person">Genesis Isabel Acosta Rodriguez (1993)</div></li>
-                                    <li><div class="connector"></div><div class="person">Veronica del Valle Acosta Rodriguez (1998)</div></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <div class="connector"></div>
-                                <div class="person">
-                                    <div class="name">Grimaldo José Acosta Deffit</div>
-                                    <div class="details">1960 - 2022</div>
-                                </div>
-                                <ul>
-                                    <li><div class="connector"></div><div class="person">Oscar Javier Acosta Gonzalez (1981) + Marvis Marcano</div>
-                                        <ul><li>Osmarys • Osmarly • Oscar David Acosta Marcano</li></ul>
-                                    </li>
-                                    <li><div class="connector"></div><div class="person">Zuligrimar Acosta Gonzalez (1985)</div></li>
-                                    <li><div class="connector"></div><div class="person">Jesus Rafael Acosta Gonzalez (1992)</div></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <div class="connector"></div>
-                                <div class="person">
-                                    <div class="name">Carlos Rafael Acosta Deffit</div>
-                                    <div class="details">1962</div>
-                                </div>
-                                <ul>
-                                    <li>Jose Luis Acosta Rivas (1984)</li>
-                                    <li>Diana Carolina Acosta Rivas (1985)</li>
-                                    <li>Ana Violeta Acosta Rivas (1987)</li>
-                                    <li>Ali Rafael Acosta Vicent (1994)</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <div class="connector"></div>
-                                <div class="person">
-                                    <div class="name">Javier José Acosta Deffit</div>
-                                    <div class="details">1963</div>
-                                </div>
-                                <ul>
-                                    <li>Maria Gabriela Acosta Melchor (2000)</li>
-                                    <li>Javier Antonio Acosta Higuerey</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <div class="connector"></div>
-                                <div class="person">
-                                    <div class="name">Jesus Antonio Acosta Deffit</div>
-                                    <div class="details">1972</div>
-                                </div>
-                                <ul>
-                                    <li>Fabiana Antonela Acosta Barreto (2006)</li>
-                                    <li>Andrea Lucia Acosta Barreto (2008)</li>
-                                </ul>
-                            </li>
+                            </div></li>
+                            <li><div class="connector"></div><div class="person">Carlos Rafael Acosta Deffit (1962) → Jose Luis, Diana, Ana Violeta, Ali Rafael</div></li>
+                            <li><div class="connector"></div><div class="person">Javier José Acosta Deffit (1963) → Maria Gabriela (2000), Javier Antonio</div></li>
+                            <li><div class="connector"></div><div class="person">Jesus Antonio Acosta Deffit (1972) → Fabiana (2006) & Andrea Lucia (2008)</div></li>
                         </ul>
                     </li>
 
-                    <!-- FERNANDA PEREZ -->
+                    <!-- ESPOSA 2: Fernanda Perez Hernandez -->
                     <li>
                         <div class="connector"></div>
                         <div class="person spouse">
@@ -234,28 +124,39 @@
                             <div class="details">1921</div>
                         </div>
                         <ul>
-                            <li>
-                                <div class="connector"></div>
-                                <div class="person">
-                                    <div class="name">Antonio Acosta Perez</div>
-                                    <div class="details">1944</div>
-                                </div>
+                            <li><div class="connector"></div><div class="person">Diogenes Acosta (1943) → Tracey Acosta (1971) & Michelle Sytema (1972) - Australia</div></li>
+                            <li><div class="connector"></div><div class="person">Antonio Acosta Perez (1944) 
                                 <ul>
                                     <li>Ana Felisa Acosta Lopez (1977)</li>
-                                    <li>Fernando Jesús Acosta Lopez (1981)</li>
+                                    <li>Fernando Jesús Acosta Lopez (1981) → Juan Fernando & Julieta</li>
                                 </ul>
-                            </li>
+                            </div></li>
+                            <li><div class="connector"></div><div class="person">Maria Del Carmen Acosta Perez (1949)</div></li>
+                        </ul>
+                    </li>
+
+                    <!-- ESPOSA 3: Raquel Josefina Salazar -->
+                    <li>
+                        <div class="connector"></div>
+                        <div class="person spouse">
+                            <div class="name">Raquel Josefina Salazar</div>
+                        </div>
+                        <ul>
                             <li>
                                 <div class="connector"></div>
                                 <div class="person">
-                                    <div class="name">Diogenes Acosta</div>
-                                    <div class="details">1943</div>
+                                    <div class="name">Matilde Salazar</div>
+                                    <div class="details">31 May 1953</div>
                                 </div>
                                 <ul>
-                                    <li>Tracey Acosta (1971) - Australia</li>
-                                    <li>Michelle Sytema Acosta (1972) - Australia</li>
+                                    <li>Gabriel Ramon Millan Salazar (1969)</li>
+                                    <li>Ledys Millan Salazar (1971) → Lewis & Lina Boada</li>
+                                    <li>Mariana Millan Salazar (1973)</li>
+                                    <li>Raquel Maria Millan Salazar (1973) → Sunleydy</li>
+                                    <li>Willian Willian Millan Salazar (1975)</li>
                                 </ul>
                             </li>
+                            <li><div class="connector"></div><div class="person">Luis Antonio Salazar (1955)</div></li>
                         </ul>
                     </li>
                 </ul>
@@ -263,12 +164,24 @@
         </ul>
     </div>
 
-    <footer>
-        <p>Árbol Genealógico Interactivo - Familia Acosta Rodríguez</p>
-        <p>Haz clic en los botones <strong>−</strong> para contraer / expandir</p>
+    <footer style="text-align:center; margin-top:50px; color:#555;">
+        <p>Árbol Genealógico Completo • Antonio Felipe Acosta Rodríguez y sus 3 esposas</p>
+        <p>Click en los botones <strong>− / +</strong> para expandir / contraer ramas</p>
     </footer>
 
     <script>
+        window.onload = function() {
+            document.querySelectorAll('.person').forEach(person => {
+                const li = person.parentElement;
+                if (li && li.querySelector('ul')) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.textContent = '−';
+                    person.appendChild(btn);
+                }
+            });
+        };
+
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('toggle-btn')) {
                 const li = e.target.closest('li');
@@ -278,20 +191,6 @@
                 }
             }
         });
-
-        // Añadir botones de toggle automáticamente
-        window.onload = function() {
-            document.querySelectorAll('.person').forEach(person => {
-                const li = person.parentElement;
-                if (li && li.querySelector('ul')) {
-                    const btn = document.createElement('button');
-                    btn.className = 'toggle-btn';
-                    btn.textContent = '−';
-                    person.style.position = 'relative';
-                    person.appendChild(btn);
-                }
-            });
-        };
     </script>
 </body>
 </html>
