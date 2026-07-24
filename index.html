@@ -6,7 +6,7 @@
     <title>Árbol Genealógico Completo - Antonio Felipe Acosta Rodríguez</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap');
-        
+       
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
@@ -14,8 +14,20 @@
             padding: 20px;
             color: #333;
         }
-        header { text-align: center; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        h1 { font-family: 'Playfair Display', serif; color: #2c3e50; margin: 0; font-size: 2.7rem; }
+        header { 
+            text-align: center; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            margin-bottom: 30px; 
+        }
+        h1 { 
+            font-family: 'Playfair Display', serif; 
+            color: #2c3e50; 
+            margin: 0; 
+            font-size: 2.7rem; 
+        }
 
         .tree-container {
             max-width: 1400px;
@@ -26,10 +38,23 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
 
-        .tree, .tree ul { list-style: none; padding: 0; margin: 0; }
-        .tree ul { padding-left: 65px; position: relative; }
+        .tree, .tree ul { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+        }
+        .tree ul { 
+            padding-left: 65px; 
+            position: relative; 
+        }
         .tree ul:before {
-            content: ''; position: absolute; left: 32px; top: 10px; bottom: 10px; width: 3px; background: #bdc3c7;
+            content: ''; 
+            position: absolute; 
+            left: 32px; 
+            top: 10px; 
+            bottom: 10px; 
+            width: 3px; 
+            background: #bdc3c7;
         }
 
         .person {
@@ -39,16 +64,28 @@
             background: #fff;
             border: 3px solid #3498db;
             border-radius: 12px;
-            width: 360px;
+            width: 380px;
             box-shadow: 0 6px 18px rgba(0,0,0,0.1);
             transition: all 0.3s;
         }
-        .person:hover { transform: scale(1.03); box-shadow: 0 12px 25px rgba(52,152,219,0.3); }
+        .person:hover { 
+            transform: scale(1.03); 
+            box-shadow: 0 12px 25px rgba(52,152,219,0.3); 
+        }
         .person.spouse { border-color: #e67e22; }
         .person.deceased { border-color: #7f8c8d; }
 
-        .name { font-size: 1.2rem; font-weight: bold; color: #2c3e50; margin: 0 0 6px 0; }
-        .details { font-size: 0.93rem; color: #555; line-height: 1.4; }
+        .name { 
+            font-size: 1.2rem; 
+            font-weight: bold; 
+            color: #2c3e50; 
+            margin: 0 0 6px 0; 
+        }
+        .details { 
+            font-size: 0.93rem; 
+            color: #555; 
+            line-height: 1.4; 
+        }
 
         .connector {
             position: absolute;
@@ -98,21 +135,31 @@
                         <div class="connector"></div>
                         <div class="person spouse">
                             <div class="name">Carmen Antonia Deffit Avila</div>
-                            <div class="details">1929 - 2020</div>
+                            <div class="details">26 Ene 1929 - 2 Abr 2020 • «Toña»</div>
                         </div>
                         <ul>
-                            <li><div class="connector"></div><div class="person">Carmen Antonia Acosta Deffit (1958) → Jezabel & Maria Antonieta (Axel Ignacio 2016)</div></li>
-                            <li><div class="connector"></div><div class="person">Diogenes Jose Acosta Deffit (1960) → Genesis (1993) & Veronica (1998)</div></li>
-                            <li><div class="connector"></div><div class="person">Grimaldo José Acosta Deffit (1960-2022) 
+                            <li><div class="connector"></div><div class="person">Carmen Antonia Acosta Deffit (1958) 
+                                <ul><li>Jezabel Sarait Eljuri Acosta (1986)</li><li>Maria Antonieta Eljuri Acosta (1990) + Alexander Gusman → Axel Ignacio (2016)</li></ul>
+                            </div></li>
+                            <li><div class="connector"></div><div class="person">Diogenes Jose Acosta Deffit (1960) 
+                                <ul><li>Genesis Isabel Acosta Rodriguez (1993)</li><li>Veronica del Valle Acosta Rodriguez (1998)</li></ul>
+                            </div></li>
+                            <li><div class="connector"></div><div class="person">Grimaldo José Acosta Deffit (1960-2022)
                                 <ul>
-                                    <li>Oscar Javier + Marvis → Osmarys, Osmarly, Oscar David</li>
-                                    <li>Zuligrimar + Williams → Zara Vaamonde</li>
-                                    <li>Jesus Rafael + Stephany</li>
+                                    <li>Oscar Javier Acosta Gonzalez (1981) + Marvis Marcano → Osmarys, Osmarly, Oscar David</li>
+                                    <li>Zuligrimar Acosta Gonzalez (1985) + Williams Vaamonde → Zara Vaamonde</li>
+                                    <li>Jesus Rafael Acosta Gonzalez (1992)</li>
                                 </ul>
                             </div></li>
-                            <li><div class="connector"></div><div class="person">Carlos Rafael Acosta Deffit (1962) → Jose Luis, Diana, Ana Violeta, Ali Rafael</div></li>
-                            <li><div class="connector"></div><div class="person">Javier José Acosta Deffit (1963) → Maria Gabriela (2000), Javier Antonio</div></li>
-                            <li><div class="connector"></div><div class="person">Jesus Antonio Acosta Deffit (1972) → Fabiana (2006) & Andrea Lucia (2008)</div></li>
+                            <li><div class="connector"></div><div class="person">Carlos Rafael Acosta Deffit (1962) 
+                                <ul><li>Jose Luis Acosta Rivas (1984)</li><li>Diana Carolina Acosta Rivas (1985)</li><li>Ana Violeta Acosta Rivas (1987)</li><li>Ali Rafael Acosta Vicent (1994)</li></ul>
+                            </div></li>
+                            <li><div class="connector"></div><div class="person">Javier José Acosta Deffit (1963) 
+                                <ul><li>Maria Gabriela Acosta Melchor (2000)</li><li>Javier Antonio Acosta Higuerey</li></ul>
+                            </div></li>
+                            <li><div class="connector"></div><div class="person">Jesus Antonio Acosta Deffit (1972) 
+                                <ul><li>Fabiana Antonela Acosta Barreto (2006)</li><li>Andrea Lucia Acosta Barreto (2008)</li></ul>
+                            </div></li>
                         </ul>
                     </li>
 
@@ -121,14 +168,16 @@
                         <div class="connector"></div>
                         <div class="person spouse">
                             <div class="name">Fernanda Perez Hernandez</div>
-                            <div class="details">1921</div>
+                            <div class="details">19 Sep 1921</div>
                         </div>
                         <ul>
-                            <li><div class="connector"></div><div class="person">Diogenes Acosta (1943) → Tracey Acosta (1971) & Michelle Sytema (1972) - Australia</div></li>
+                            <li><div class="connector"></div><div class="person">Diogenes Acosta (1943) 
+                                <ul><li>Tracey Acosta (1971) - Australia</li><li>Michelle Sytema Acosta (1972) - Australia</li></ul>
+                            </div></li>
                             <li><div class="connector"></div><div class="person">Antonio Acosta Perez (1944) 
                                 <ul>
                                     <li>Ana Felisa Acosta Lopez (1977)</li>
-                                    <li>Fernando Jesús Acosta Lopez (1981) → Juan Fernando & Julieta</li>
+                                    <li>Fernando Jesús Acosta Lopez (1981) → Juan Fernando & Julieta Vanessa</li>
                                 </ul>
                             </div></li>
                             <li><div class="connector"></div><div class="person">Maria Del Carmen Acosta Perez (1949)</div></li>
@@ -150,9 +199,9 @@
                                 </div>
                                 <ul>
                                     <li>Gabriel Ramon Millan Salazar (1969)</li>
-                                    <li>Ledys Millan Salazar (1971) → Lewis & Lina Boada</li>
+                                    <li>Ledys Millan Salazar (1971) → Lewis Boada & Lina Boada</li>
                                     <li>Mariana Millan Salazar (1973)</li>
-                                    <li>Raquel Maria Millan Salazar (1973) → Sunleydy</li>
+                                    <li>Raquel Maria Millan Salazar (1973) → Sunleydy Millan</li>
                                     <li>Willian Willian Millan Salazar (1975)</li>
                                 </ul>
                             </li>
