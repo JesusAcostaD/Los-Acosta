@@ -1,492 +1,297 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Árbol Genealógico — Antonio Felipe Acosta Rodriguez</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#1c2b22;
-    --paper:#f0ead9;
-    --forest:#1f4033;
-    --forest-deep:#12281f;
-    --gold:#b8923f;
-    --gold-soft:#e3cd8f;
-    --line:#c9bd9a;
-    --card:#ffffff;
-    --muted:#5b6b60;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--paper);
-    background-image:
-      radial-gradient(circle at 15% 8%, rgba(31,64,51,0.06), transparent 40%),
-      radial-gradient(circle at 85% 92%, rgba(184,146,63,0.10), transparent 45%);
-    color:var(--ink);
-    font-family:'Source Serif 4', serif;
-    line-height:1.5;
-  }
-  h1,h2,h3, .display{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    letter-spacing:-0.01em;
-  }
-  .mono{font-family:'JetBrains Mono', monospace; letter-spacing:0.02em;}
-
-  /* ---------- HERO ---------- */
-  .hero{
-    position:relative;
-    background:linear-gradient(180deg, var(--forest-deep) 0%, var(--forest) 100%);
-    color:var(--paper);
-    padding:5rem 1.5rem 6rem;
-    overflow:hidden;
-    text-align:center;
-  }
-  .hero::before{
-    content:"";
-    position:absolute; inset:0;
-    background-image:
-      repeating-linear-gradient(90deg, rgba(227,205,143,0.05) 0px, rgba(227,205,143,0.05) 1px, transparent 1px, transparent 64px);
-    pointer-events:none;
-  }
-  .hero .eyebrow{
-    font-family:'JetBrains Mono', monospace;
-    text-transform:uppercase;
-    letter-spacing:0.25em;
-    font-size:0.7rem;
-    color:var(--gold-soft);
-    margin-bottom:1.2rem;
-  }
-  .hero h1{
-    font-size:clamp(2.2rem, 5vw, 3.8rem);
-    margin:0 0 0.6rem;
-    font-style:italic;
-  }
-  .hero p.sub{
-    color:#cfd9cf;
-    max-width:560px;
-    margin:0 auto;
-    font-size:1.05rem;
-  }
-  .rings{
-    display:flex; justify-content:center; gap:0.6rem; margin-top:2.6rem; flex-wrap:wrap;
-  }
-  .ring{
-    display:flex; flex-direction:column; align-items:center;
-    padding:0.7rem 1.1rem;
-    border:1px solid rgba(227,205,143,0.35);
-    border-radius:999px;
-    background:rgba(255,255,255,0.03);
-    min-width:88px;
-  }
-  .ring .n{font-family:'Fraunces',serif; font-size:1.4rem; color:var(--gold-soft);}
-  .ring .l{font-family:'JetBrains Mono',monospace; font-size:0.62rem; text-transform:uppercase; letter-spacing:0.08em; color:#a9b8ac; margin-top:0.2rem;}
-
-  /* ---------- NAV / SEARCH ---------- */
-  .toolbar{
-    position:sticky; top:0; z-index:10;
-    background:rgba(240,234,217,0.94);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line);
-    padding:0.9rem 1.5rem;
-    display:flex; gap:0.8rem; flex-wrap:wrap; align-items:center;
-    justify-content:center;
-  }
-  .toolbar input[type="text"]{
-    font-family:'Source Serif 4', serif;
-    font-size:0.95rem;
-    padding:0.55rem 0.9rem;
-    border:1px solid var(--line);
-    border-radius:8px;
-    background:var(--card);
-    min-width:220px;
-    color:var(--ink);
-  }
-  .toolbar input:focus{outline:2px solid var(--gold); outline-offset:1px;}
-  .chip{
-    font-family:'JetBrains Mono',monospace;
-    font-size:0.72rem;
-    text-transform:uppercase;
-    letter-spacing:0.05em;
-    padding:0.45rem 0.85rem;
-    border-radius:999px;
-    border:1px solid var(--line);
-    background:var(--card);
-    cursor:pointer;
-    color:var(--muted);
-    transition:all .15s ease;
-  }
-  .chip.active, .chip:hover{
-    background:var(--forest);
-    color:var(--gold-soft);
-    border-color:var(--forest);
-  }
-
-  /* ---------- SECTIONS ---------- */
-  main{max-width:1100px; margin:0 auto; padding:3rem 1.5rem 5rem;}
-  .gen{margin-bottom:3.2rem;}
-  .gen-head{
-    display:flex; align-items:baseline; gap:0.9rem;
-    border-bottom:2px solid var(--forest);
-    padding-bottom:0.6rem;
-    margin-bottom:1.3rem;
-  }
-  .gen-head .num{
-    font-family:'Fraunces',serif; font-style:italic; font-size:2.2rem;
-    color:var(--gold); line-height:1;
-  }
-  .gen-head h2{font-size:1.4rem; margin:0;}
-  .gen-head .count{
-    margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--muted);
-  }
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
-    gap:0.85rem;
-  }
-  .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-left:4px solid var(--forest);
-    border-radius:6px;
-    padding:0.85rem 1rem;
-    transition:transform .15s ease, box-shadow .15s ease;
-  }
-  .card:hover{ transform:translateY(-2px); box-shadow:0 6px 16px rgba(31,64,51,0.12); }
-  .card .name{font-weight:600; font-size:1rem; margin-bottom:0.25rem;}
-  .card .rel{font-size:0.85rem; color:var(--muted); font-style:italic;}
-  .card[data-cat="child"]{border-left-color:#1f4033;}
-  .card[data-cat="grandchild"]{border-left-color:#5c7a63;}
-  .card[data-cat="greatgrandchild"]{border-left-color:#9db38f;}
-  .card[data-cat="spouse"]{border-left-color:#b8923f;}
-  .card[data-cat="exspouse"]{border-left-color:#c9a86a;}
-  .card[data-cat="inlaw"]{border-left-color:#8c6d46;}
-  .card[data-cat="parent"], .card[data-cat="sibling"]{border-left-color:#3d5945;}
-  .card[data-cat="other"]{border-left-color:#a89c78;}
-
-  .hidden{display:none !important;}
-
-  footer{
-    text-align:center; padding:2.5rem 1rem 3rem; color:var(--muted); font-size:0.85rem;
-    font-family:'JetBrains Mono', monospace;
-  }
-  .empty-msg{
-    text-align:center; color:var(--muted); padding:2rem; font-style:italic; display:none;
-  }
-  @media (max-width:600px){
-    .ring{min-width:70px; padding:0.5rem 0.7rem;}
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Árbol Genealógico - Familia Acosta Rodríguez</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        
+        header {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2.6rem;
+        }
+        
+        .tree-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .tree, .tree ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .tree ul {
+            padding-left: 60px;
+            position: relative;
+        }
+        
+        .tree ul:before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 10px;
+            bottom: 10px;
+            width: 3px;
+            background: #bdc3c7;
+        }
+        
+        .person {
+            position: relative;
+            margin: 18px 0;
+            padding: 18px 22px;
+            background: #fff;
+            border: 3px solid #3498db;
+            border-radius: 12px;
+            width: 340px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .person:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 25px rgba(52,152,219,0.25);
+        }
+        
+        .person.spouse { border-color: #e67e22; }
+        .person.deceased { border-color: #7f8c8d; }
+        
+        .name {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0 0 8px 0;
+        }
+        
+        .details {
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        .connector {
+            position: absolute;
+            top: 50%;
+            left: -32px;
+            width: 32px;
+            height: 3px;
+            background: #bdc3c7;
+        }
+        
+        .toggle-btn {
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #3498db;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .collapsed > ul { display: none !important; }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <h1>Antonio Felipe Acosta Rodríguez</h1>
+        <p>1916 — 1995 | Árbol Genealógico Completo</p>
+    </header>
 
-<section class="hero">
-  <div class="eyebrow">Registro genealógico &middot; Familia Acosta</div>
-  <h1>Antonio Felipe Acosta Rodriguez</h1>
-  <p class="sub">Un mapa de parentescos: hijos, nietos, bisnietos y familia política, organizados por generación a partir del árbol registrado.</p>
-  <div class="rings" id="ringSummary"></div>
-</section>
+    <div class="tree-container">
+        <ul class="tree">
+            <li>
+                <div class="person" style="border-color:#2c3e50;">
+                    <div class="name">Antonio Felipe Acosta Rodríguez</div>
+                    <div class="details">16 Feb 1916 - 8 Dic 1995 • Tazacorte → Margarita</div>
+                </div>
 
-<div class="toolbar">
-  <input type="text" id="searchBox" placeholder="Buscar por nombre o parentesco…">
-  <button class="chip active" data-filter="all">Todos</button>
-  <button class="chip" data-filter="child">Hijos</button>
-  <button class="chip" data-filter="grandchild">Nietos</button>
-  <button class="chip" data-filter="greatgrandchild">Bisnietos</button>
-  <button class="chip" data-filter="spouse">Cónyuges</button>
-  <button class="chip" data-filter="inlaw">Familia política</button>
-  <button class="chip" data-filter="other">Otros / lejanos</button>
-</div>
+                <ul>
+                    <!-- CARMEN ANTONIA DEFFIT AVILA -->
+                    <li>
+                        <div class="connector"></div>
+                        <div class="person spouse">
+                            <div class="name">Carmen Antonia Deffit Avila</div>
+                            <div class="details">1929 - 2020</div>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="connector"></div>
+                                <div class="person">
+                                    <div class="name">Carmen Antonia Acosta Deffit</div>
+                                    <div class="details">1958</div>
+                                </div>
+                                <ul>
+                                    <li><div class="connector"></div><div class="person">Jezabel Sarait Eljuri Acosta (1986)</div></li>
+                                    <li><div class="connector"></div><div class="person">Maria Antonieta Eljuri Acosta (1990) + Alexander Gusman</div>
+                                        <ul><li><div class="connector"></div><div class="person">Axel Ignacio Gomez Eljuri (2016)</div></li></ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="connector"></div>
+                                <div class="person">
+                                    <div class="name">Diogenes Jose Acosta Deffit</div>
+                                    <div class="details">1960</div>
+                                </div>
+                                <ul>
+                                    <li><div class="connector"></div><div class="person">Genesis Isabel Acosta Rodriguez (1993)</div></li>
+                                    <li><div class="connector"></div><div class="person">Veronica del Valle Acosta Rodriguez (1998)</div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="connector"></div>
+                                <div class="person">
+                                    <div class="name">Grimaldo José Acosta Deffit</div>
+                                    <div class="details">1960 - 2022</div>
+                                </div>
+                                <ul>
+                                    <li><div class="connector"></div><div class="person">Oscar Javier Acosta Gonzalez (1981) + Marvis Marcano</div>
+                                        <ul><li>Osmarys • Osmarly • Oscar David Acosta Marcano</li></ul>
+                                    </li>
+                                    <li><div class="connector"></div><div class="person">Zuligrimar Acosta Gonzalez (1985)</div></li>
+                                    <li><div class="connector"></div><div class="person">Jesus Rafael Acosta Gonzalez (1992)</div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="connector"></div>
+                                <div class="person">
+                                    <div class="name">Carlos Rafael Acosta Deffit</div>
+                                    <div class="details">1962</div>
+                                </div>
+                                <ul>
+                                    <li>Jose Luis Acosta Rivas (1984)</li>
+                                    <li>Diana Carolina Acosta Rivas (1985)</li>
+                                    <li>Ana Violeta Acosta Rivas (1987)</li>
+                                    <li>Ali Rafael Acosta Vicent (1994)</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="connector"></div>
+                                <div class="person">
+                                    <div class="name">Javier José Acosta Deffit</div>
+                                    <div class="details">1963</div>
+                                </div>
+                                <ul>
+                                    <li>Maria Gabriela Acosta Melchor (2000)</li>
+                                    <li>Javier Antonio Acosta Higuerey</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="connector"></div>
+                                <div class="person">
+                                    <div class="name">Jesus Antonio Acosta Deffit</div>
+                                    <div class="details">1972</div>
+                                </div>
+                                <ul>
+                                    <li>Fabiana Antonela Acosta Barreto (2006)</li>
+                                    <li>Andrea Lucia Acosta Barreto (2008)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
 
-<main id="main"></main>
+                    <!-- FERNANDA PEREZ -->
+                    <li>
+                        <div class="connector"></div>
+                        <div class="person spouse">
+                            <div class="name">Fernanda Perez Hernandez</div>
+                            <div class="details">1921</div>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="connector"></div>
+                                <div class="person">
+                                    <div class="name">Antonio Acosta Perez</div>
+                                    <div class="details">1944</div>
+                                </div>
+                                <ul>
+                                    <li>Ana Felisa Acosta Lopez (1977)</li>
+                                    <li>Fernando Jesús Acosta Lopez (1981)</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="connector"></div>
+                                <div class="person">
+                                    <div class="name">Diogenes Acosta</div>
+                                    <div class="details">1943</div>
+                                </div>
+                                <ul>
+                                    <li>Tracey Acosta (1971) - Australia</li>
+                                    <li>Michelle Sytema Acosta (1972) - Australia</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 
-<footer>Árbol generado a partir del documento de parentescos &middot; 3 páginas &middot; generaciones 0–6</footer>
+    <footer>
+        <p>Árbol Genealógico Interactivo - Familia Acosta Rodríguez</p>
+        <p>Haz clic en los botones <strong>−</strong> para contraer / expandir</p>
+    </footer>
 
-<script>
-const DATA = [
-/* ---- Paso 1 ---- */
-{n:"Fernanda Perez Hernandez", r:"ex-esposa de Antonio Felipe", s:1, c:"exspouse"},
-{n:"Carlos Javier Acosta", r:"hijo", s:1, c:"child"},
-{n:"Antonio Acosta Perez", r:"hijo", s:1, c:"child"},
-{n:"Diogenes Acosta", r:"hijo", s:1, c:"child"},
-{n:"Diogenes Jose Acosta Deffit", r:"hijo", s:1, c:"child"},
-{n:"Grimaldo José Acosta Deffit", r:"hijo", s:1, c:"child"},
-{n:"Carlos Rafael Acosta Deffit", r:"hijo", s:1, c:"child"},
-{n:"Javier José Acosta Deffit", r:"hijo", s:1, c:"child"},
-{n:"Jesus Antonio Acosta Deffit", r:"hijo", s:1, c:"child"},
-{n:"Luis Antonio Salazar", r:"hijo", s:1, c:"child"},
-{n:"Matilde Salazar", r:"hija", s:1, c:"child"},
-{n:"Maria Del Carmen Acosta Perez", r:"hija", s:1, c:"child"},
-{n:"Carmen Antonia Acosta Deffit", r:"hija", s:1, c:"child"},
-{n:"Desconocido Acosta", r:"padre de Antonio Felipe", s:1, c:"parent"},
-{n:"Matilde Rodriguez", r:"madre de Antonio Felipe", s:1, c:"parent"},
-{n:"Antonio Manuel Acosta Rodriguez", r:"hermano", s:1, c:"sibling"},
-{n:"Raquel Josefina Salazar", r:"esposa", s:1, c:"spouse"},
-{n:"Carmen Antonia Deffit Avila", r:"esposa", s:1, c:"spouse"},
+    <script>
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('toggle-btn')) {
+                const li = e.target.closest('li');
+                if (li) {
+                    li.classList.toggle('collapsed');
+                    e.target.textContent = li.classList.contains('collapsed') ? '+' : '−';
+                }
+            }
+        });
 
-/* ---- Paso 2 ---- */
-{n:"Blas Perez Gutiérrez", r:"padre de la ex-esposa", s:2, c:"inlaw"},
-{n:"Bernarda Hernandez Gonzalez", r:"madre de la ex-esposa", s:2, c:"inlaw"},
-{n:"Mirian Higuerey", r:"ex-esposa de un hijo", s:2, c:"inlaw"},
-{n:"Zulay Gonzalez Ferrer", r:"ex-esposa de un hijo", s:2, c:"inlaw"},
-{n:"Oscar Javier Acosta Gonzalez", r:"nieto", s:2, c:"grandchild"},
-{n:"Javier Antonio Acosta Higuerey", r:"nieto", s:2, c:"grandchild"},
-{n:"Jose Luis Acosta Rivas", r:"nieto", s:2, c:"grandchild"},
-{n:"Fernando Jesús Acosta Lopez", r:"nieto", s:2, c:"grandchild"},
-{n:"Grimaldo Acosta", r:"nieto", s:2, c:"grandchild"},
-{n:"Ali Rafael Acosta Vicent", r:"nieto", s:2, c:"grandchild"},
-{n:"Jesus Rafael Acosta Gonzalez", r:"nieto", s:2, c:"grandchild"},
-{n:"Andrea Lucia Acosta Barreto", r:"nieta", s:2, c:"grandchild"},
-{n:"Zuligrimar Acosta Gonzalez", r:"nieta", s:2, c:"grandchild"},
-{n:"María Monserrat Acosta Lopez", r:"nieta", s:2, c:"grandchild"},
-{n:"Tracey Acosta", r:"nieta", s:2, c:"grandchild"},
-{n:"Ana Violeta Acosta Rivas", r:"nieta", s:2, c:"grandchild"},
-{n:"Diana Carolina Acosta Rivas", r:"nieta", s:2, c:"grandchild"},
-{n:"Genesis Isabel Acosta Rodriguez", r:"nieta", s:2, c:"grandchild"},
-{n:"Veronica del Valle Acosta Rodriguez", r:"nieta", s:2, c:"grandchild"},
-{n:"Maria Gabriela Acosta Melchor", r:"nieta", s:2, c:"grandchild"},
-{n:"Michelle Sytema Acosta", r:"nieta", s:2, c:"grandchild"},
-{n:"Ana Felisa Acosta Lopez", r:"nieta", s:2, c:"grandchild"},
-{n:"Fabiana Antonela Acosta Barreto", r:"nieta", s:2, c:"grandchild"},
-{n:"Mariela Melchor", r:"nuera (esposa de un hijo)", s:2, c:"inlaw"},
-{n:"Marbelis Rivas", r:"nuera", s:2, c:"inlaw"},
-{n:"Yolanda de Acosta", r:"nuera", s:2, c:"inlaw"},
-{n:"Jennyfer Brillit Barreto Cabrera", r:"nuera", s:2, c:"inlaw"},
-{n:"Mirian Yackelyn Vicent Mujica", r:"nuera", s:2, c:"inlaw"},
-{n:"Marisa Acosta", r:"nuera", s:2, c:"inlaw"},
-{n:"Maria de la Luz Lopez", r:"nuera", s:2, c:"inlaw"},
-{n:"Yirda Rodriguez", r:"nuera", s:2, c:"inlaw"},
-{n:"Luis Alfredo Eljuri Garcia", r:"ex-esposo de una hija", s:2, c:"inlaw"},
-{n:"Hugo Aguayo", r:"pareja de una hija", s:2, c:"inlaw"},
-{n:"Benjamín Concepcion Acosta", r:"nieto", s:2, c:"grandchild"},
-{n:"Willian Willian Millan Salazar", r:"nieto", s:2, c:"grandchild"},
-{n:"Gabriel Ramon Millan Salazar", r:"nieto", s:2, c:"grandchild"},
-{n:"Ledys Millan Salazar", r:"nieta", s:2, c:"grandchild"},
-{n:"Raquel Maria Millan Salazar", r:"nieta", s:2, c:"grandchild"},
-{n:"Jezabel Sarait Eljuri Acosta", r:"nieta", s:2, c:"grandchild"},
-{n:"Mariana Millan Salazar", r:"nieta", s:2, c:"grandchild"},
-{n:"Maria Antonieta Eljuri Acosta", r:"nieta", s:2, c:"grandchild"},
-{n:"Guillermo Millan", r:"yerno (esposo de una hija)", s:2, c:"inlaw"},
-{n:"Manuel", r:"yerno", s:2, c:"inlaw"},
-{n:"Pedro Ramon Avila", r:"hijastro", s:2, c:"inlaw"},
-{n:"Pedro Deffit", r:"suegro", s:2, c:"inlaw"},
-{n:"Enemencia Avila", r:"suegra", s:2, c:"inlaw"},
-{n:"Jesus Rafael Deffit Avila", r:"cuñado (hermano de su esposa)", s:2, c:"inlaw"},
-{n:"Eligia Deffit Avila", r:"cuñada (hermana de su esposa)", s:2, c:"inlaw"},
-{n:"Antonio Enrrique", r:"se casó con la misma mujer", s:2, c:"other"},
-
-/* ---- Paso 3 ---- */
-{n:"Rainosk Pino", r:"pareja de un nieto", s:3, c:"inlaw"},
-{n:"Juan Fernando Acosta Sulbaran", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Enrique Jose Acosta", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Oscar David Acosta Marcano", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Acosta Triviño", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Estefania Acosta Rivas", r:"bisnieta", s:3, c:"greatgrandchild"},
-{n:"Javier Enrique Acosta Gutierrez", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Antonella Sophia Acosta Pino", r:"bisnieta", s:3, c:"greatgrandchild"},
-{n:"Julieta Vanessa Acosta Sulbaran", r:"bisnieta", s:3, c:"greatgrandchild"},
-{n:"Osmarly Acosta Marcano", r:"bisnieta", s:3, c:"greatgrandchild"},
-{n:"Osmarys Acosta Marcano", r:"bisnieta", s:3, c:"greatgrandchild"},
-{n:"Marvis Yaneth Marcano Suarez", r:"esposa de un nieto", s:3, c:"inlaw"},
-{n:"Stephany Triviño", r:"esposa de un nieto", s:3, c:"inlaw"},
-{n:"Juliandrys de Acosta", r:"esposa de un nieto", s:3, c:"inlaw"},
-{n:"Vanessa Sulbaran", r:"esposa de un nieto", s:3, c:"inlaw"},
-{n:"Yami Acosta", r:"esposa de un nieto", s:3, c:"inlaw"},
-{n:"Simón Salazar Gardié", r:"ex-esposo de una nieta", s:3, c:"inlaw"},
-{n:"Manuel Gonzalez Golindano", r:"pareja de una nieta", s:3, c:"inlaw"},
-{n:"Joshua Sytema Acosta", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Alexander Sytema Acosta", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Maximiliano Viloria Acosta", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Ben Vignale Acosta", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Jamie Vignale Acosta", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Zara Vaamonde", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Emiliano", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Violet Nicolle Pulido Acosta", r:"bisnieta", s:3, c:"greatgrandchild"},
-{n:"Camila Isabel Salazar Acosta", r:"bisnieta", s:3, c:"greatgrandchild"},
-{n:"Terrance Sytema", r:"esposo de una nieta", s:3, c:"inlaw"},
-{n:"Euclides Viloria", r:"esposo de una nieta", s:3, c:"inlaw"},
-{n:"Johnny Vignale", r:"esposo de una nieta", s:3, c:"inlaw"},
-{n:"Carlos Vincent", r:"esposo de una nieta", s:3, c:"inlaw"},
-{n:"Williams Vaamonde", r:"esposo de una nieta", s:3, c:"inlaw"},
-{n:"Desconocido", r:"ex-esposo de la esposa de un hijo", s:3, c:"other"},
-{n:"Desconocido Leon", r:"ex-esposo de la esposa de un hijo", s:3, c:"other"},
-{n:"Bernardo Jose Melchor Astudillo", r:"hijastro de un hijo", s:3, c:"inlaw"},
-{n:"Veruska Leon Vicent", r:"hijastra de un hijo", s:3, c:"inlaw"},
-{n:"Humberto Barreto", r:"padre de una nuera", s:3, c:"inlaw"},
-{n:"Marta Lucia Cabrera Ayala", r:"consuegra", s:3, c:"inlaw"},
-{n:"Stivenzon Barreto Cabrera", r:"hermano de una nuera", s:3, c:"inlaw"},
-{n:"Stip Barreto Cabrera", r:"hermano de una nuera", s:3, c:"inlaw"},
-{n:"Erika Barreto Cabrera", r:"hermana de una cuñada", s:3, c:"other"},
-{n:"Alida Tancredi", r:"ex-esposa del ex-esposo de una hija", s:3, c:"other"},
-{n:"Luis Alberto Eljuri Tancredi", r:"hijo del ex-esposo de una hija", s:3, c:"other"},
-{n:"Yamani Eljuri Tancredi", r:"hijo del ex-esposo de una hija", s:3, c:"other"},
-{n:"Jose Gabriel Millan Lopez", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Virginia Lopez", r:"esposa de un nieto", s:3, c:"inlaw"},
-{n:"Desconocido 2", r:"ex-esposo de una nieta", s:3, c:"other"},
-{n:"Alexander Jose Gusman Gomez", r:"pareja de una nieta", s:3, c:"inlaw"},
-{n:"Lewis Boada Millan", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Axel Ignacio Gomez Eljuri", r:"bisnieto", s:3, c:"greatgrandchild"},
-{n:"Sunleydy Millan M", r:"bisnieta", s:3, c:"greatgrandchild"},
-{n:"Lina Boada Millan", r:"bisnieta", s:3, c:"greatgrandchild"},
-{n:"Luis Jose Boada Velasquez", r:"esposo de una nieta", s:3, c:"inlaw"},
-{n:"Pedro Javier Avila", r:"nieto de la esposa", s:3, c:"other"},
-{n:"Iliana carmen Avila", r:"nieta de la esposa", s:3, c:"other"},
-{n:"Anays Avila", r:"nieta de la esposa", s:3, c:"other"},
-{n:"Ana Lucia de Avila", r:"nuera de la esposa", s:3, c:"other"},
-{n:"Bernarda Avila", r:"media hermana de la esposa", s:3, c:"other"},
-{n:"Desconocido", r:"padrastro de la esposa", s:3, c:"other"},
-{n:"Alexis Urbaiz Avila", r:"sobrino de la esposa", s:3, c:"other"},
-{n:"Mary Urbaiz Avila", r:"sobrina de la esposa", s:3, c:"other"},
-
-/* ---- Paso 4 ---- */
-{n:"Yuliannys Diaz Pino", r:"relacionada (4 pasos)", s:4, c:"other"},
-{n:"Desconocido", r:"relacionado (4 pasos)", s:4, c:"other"},
-{n:"Tahlia Rist", r:"esposa de un bisnieto", s:4, c:"inlaw"},
-{n:"Daya Ahumada", r:"relacionada (4 pasos)", s:4, c:"other"},
-{n:"Itham Gael Melchor Ahumada", r:"nieto de una nuera", s:4, c:"other"},
-{n:"Varonee Verenice Achique Cabrera", r:"hija de la consuegra", s:4, c:"other"},
-{n:"Liliana Barreto Cabrera", r:"hija de la consuegra", s:4, c:"other"},
-{n:"Rey Achique", r:"esposo de la consuegra", s:4, c:"other"},
-{n:"Desconocido", r:"esposo de la consuegra", s:4, c:"other"},
-{n:"Desconocido", r:"ex-esposa del cuñado de un hijo", s:4, c:"other"},
-{n:"Desconocido Barreto", r:"sobrino de la esposa de un hijo", s:4, c:"other"},
-{n:"Desconocido Barreto", r:"sobrina de la esposa de un hijo", s:4, c:"other"},
-{n:"Desconocido", r:"esposa del hermano de una nuera", s:4, c:"other"},
-{n:"Tancredi", r:"hija de la ex-esposa del ex-esposo de una hija", s:4, c:"other"},
-{n:"Eljuri", r:"nieta del ex-esposo de una hija", s:4, c:"other"},
-{n:"Sadie Eljuri", r:"nieta del ex-esposo de una hija", s:4, c:"other"},
-{n:"Desconocido Millan", r:"descendiente directo (tatara-tatara-nieto)", s:4, c:"greatgrandchild"},
-{n:"Angel Custodio Guzman", r:"relacionado (4 pasos)", s:4, c:"other"},
-{n:"Desconocido Gomez", r:"relacionada (4 pasos)", s:4, c:"other"},
-{n:"Desconocido Guzman", r:"relacionado (4 pasos)", s:4, c:"other"},
-{n:"Aaron David Espinoza Avila", r:"bisnieto de la esposa", s:4, c:"other"},
-{n:"Ashley Carolina Oliveros Avila", r:"bisnieta de la esposa", s:4, c:"other"},
-{n:"Roraima Iginia Espinoza Avila", r:"bisnieta de la esposa", s:4, c:"other"},
-{n:"Cesar Oliveros", r:"esposo de una nieta de la esposa", s:4, c:"other"},
-{n:"Elias Jose Espinoza Verenzuela", r:"esposo de una nieta de la esposa", s:4, c:"other"},
-{n:"Enemencio Avila", r:"nieto de la suegra", s:4, c:"other"},
-{n:"Cesar Graziani Avila", r:"nieto de la suegra", s:4, c:"other"},
-{n:"Antonieta Graziani Avila", r:"nieta de la suegra", s:4, c:"other"},
-{n:"Desconocido", r:"yerno de la suegra", s:4, c:"other"},
-{n:"Cesare Graziani Fucela", r:"yerno de la suegra", s:4, c:"other"},
-{n:"Jany Urbaiz", r:"nieta del hermano de la esposa", s:4, c:"other"},
-
-/* ---- Paso 5 ---- */
-{n:"Desconocido Achique", r:"nieto de la consuegra", s:5, c:"other"},
-{n:"Andres Manrique Cabrera", r:"nieto de la consuegra", s:5, c:"other"},
-{n:"Desconocido Achique", r:"nieto de la consuegra", s:5, c:"other"},
-{n:"Desconocido", r:"yerno de la consuegra", s:5, c:"other"},
-{n:"Jose Williams Manrique Niño", r:"yerno de la consuegra", s:5, c:"other"},
-{n:"Jose Joaquin Salazar Franco", r:"relacionado (5 pasos)", s:5, c:"other"},
-{n:"Felipe Marin", r:"relacionado (5 pasos)", s:5, c:"other"},
-{n:"Maurilia Gomez", r:"relacionada (5 pasos)", s:5, c:"other"},
-{n:"Angel Enrique Guzman Garcia", r:"relacionado (5 pasos)", s:5, c:"other"},
-{n:"Anthony Graziani Rodriguez", r:"bisnieto de la suegra", s:5, c:"other"},
-{n:"Cesar Graziani Rodriguez", r:"bisnieto de la suegra", s:5, c:"other"},
-{n:"Javier Graziani", r:"bisnieto de la suegra", s:5, c:"other"},
-{n:"Rocco Bernaldo Arteaga Avila", r:"bisnieto de la suegra", s:5, c:"other"},
-{n:"Jorge Luis Arteaga Avila", r:"bisnieto de la suegra", s:5, c:"other"},
-{n:"Luis Andres Avila", r:"bisnieto de la suegra", s:5, c:"other"},
-{n:"Desconocido Graziani", r:"bisnieto de la suegra", s:5, c:"other"},
-{n:"Marianell Graziani Rodriguez", r:"bisnieta de la suegra", s:5, c:"other"},
-{n:"Milagros Avila", r:"bisnieta de la suegra", s:5, c:"other"},
-{n:"Nelly Josefina Rodriguez", r:"esposa de un nieto de la suegra", s:5, c:"other"},
-{n:"Desconocido", r:"esposa de un nieto de la suegra", s:5, c:"other"},
-{n:"Antonella Urbaiz", r:"bisnieta de un cuñado", s:5, c:"other"},
-{n:"Urbaiz", r:"esposo de la nieta de un cuñado", s:5, c:"other"},
-
-/* ---- Paso 6 ---- */
-{n:"Luz Galarraga", r:"relacionada (6 pasos)", s:6, c:"other"},
-{n:"Emibel Rojas", r:"relacionada (6 pasos)", s:6, c:"other"},
-{n:"Desconocido", r:"relacionada (6 pasos)", s:6, c:"other"},
-{n:"Graziani Rojas", r:"descendiente directo de la suegra", s:6, c:"other"},
-{n:"Arteaga", r:"descendiente directo de la suegra", s:6, c:"other"},
-{n:"Wuileska Graziani Rojas", r:"descendiente directo de la suegra", s:6, c:"other"},
-{n:"Desconocido Avila", r:"descendiente directo de la suegra", s:6, c:"other"},
-{n:"Slismars Fransheska Avila", r:"descendiente directo de la suegra", s:6, c:"other"},
-];
-
-const GEN_LABELS = {
-  0:"El tronco", 1:"Padres, hermano, esposas e hijos", 2:"Nietos y su generación",
-  3:"Bisnietos y su generación", 4:"Familia extendida — 4 pasos",
-  5:"Familia extendida — 5 pasos", 6:"Familia extendida — 6 pasos"
-};
-
-function render(){
-  const main = document.getElementById('main');
-  main.innerHTML = "";
-  const bySteps = {};
-  DATA.forEach(p=>{ (bySteps[p.s] = bySteps[p.s]||[]).push(p); });
-
-  Object.keys(bySteps).sort((a,b)=>a-b).forEach(step=>{
-    const people = bySteps[step];
-    const section = document.createElement('div');
-    section.className = 'gen';
-    section.dataset.step = step;
-    section.innerHTML = `
-      <div class="gen-head">
-        <span class="num mono">${String(step).padStart(2,'0')}</span>
-        <h2>${GEN_LABELS[step] || ('Grado '+step)}</h2>
-        <span class="count mono">${people.length} personas</span>
-      </div>
-      <div class="grid"></div>
-    `;
-    const grid = section.querySelector('.grid');
-    people.forEach(p=>{
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.dataset.cat = p.c;
-      card.dataset.search = (p.n + ' ' + p.r).toLowerCase();
-      card.innerHTML = `<div class="name">${p.n}</div><div class="rel">${p.r}</div>`;
-      grid.appendChild(card);
-    });
-    main.appendChild(section);
-  });
-
-  // ring summary in hero
-  const ring = document.getElementById('ringSummary');
-  ring.innerHTML = "";
-  Object.keys(bySteps).sort((a,b)=>a-b).forEach(step=>{
-    const div = document.createElement('div');
-    div.className = 'ring';
-    div.innerHTML = `<span class="n">${bySteps[step].length}</span><span class="l mono">paso ${step}</span>`;
-    ring.appendChild(div);
-  });
-}
-render();
-
-let activeFilter = 'all';
-let query = '';
-
-function applyFilters(){
-  document.querySelectorAll('.card').forEach(card=>{
-    const matchesFilter = activeFilter === 'all' || card.dataset.cat === activeFilter;
-    const matchesQuery = !query || card.dataset.search.includes(query);
-    card.classList.toggle('hidden', !(matchesFilter && matchesQuery));
-  });
-  document.querySelectorAll('.gen').forEach(sec=>{
-    const visible = sec.querySelectorAll('.card:not(.hidden)').length;
-    sec.classList.toggle('hidden', visible === 0);
-  });
-}
-
-document.querySelectorAll('.chip').forEach(chip=>{
-  chip.addEventListener('click', ()=>{
-    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-    chip.classList.add('active');
-    activeFilter = chip.dataset.filter;
-    applyFilters();
-  });
-});
-
-document.getElementById('searchBox').addEventListener('input', (e)=>{
-  query = e.target.value.trim().toLowerCase();
-  applyFilters();
-});
-</script>
+        // Añadir botones de toggle automáticamente
+        window.onload = function() {
+            document.querySelectorAll('.person').forEach(person => {
+                const li = person.parentElement;
+                if (li && li.querySelector('ul')) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.textContent = '−';
+                    person.style.position = 'relative';
+                    person.appendChild(btn);
+                }
+            });
+        };
+    </script>
 </body>
 </html>
